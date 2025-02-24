@@ -50,20 +50,17 @@ let gameController = (function () {
     const board = gameBoard.getBoard();
 
     for (let i = 0; i < 3; i++) {
-      if (
-        board[0][i] !== "" &&
-        board[i][0] === board[i][1] &&
-        board[i][0] === board[i][2]
-      )
-        return true;
+        if (board[i][0] !== "" && board[i][0] === board[i][1] && board[i][0] === board[i][2]) {
+          return true;
+        }
+      }
+      
+      for (let i = 0; i < 3; i++) {
+        if (board[0][i] !== "" && board[0][i] === board[1][i] && board[0][i] === board[2][i]) {
+          return true;
+        }
+      }
 
-      if (
-        board[0][i] !== "" &&
-        board[0][i] === board[1][i] &&
-        board[0][i] == board[2][i]
-      )
-        return true;
-    }
 
     if (
       board[0][0] !== "" &&
