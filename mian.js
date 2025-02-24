@@ -58,19 +58,19 @@ let gameController = (function () {
     }
 
     if (
-        board[0][0] !== "" &&
-        board[0][0] === board[1][1] &&
-        board[0][0] === board[2][2]
-      )
-        return true;
-      if (
-        board[0][2] !== "" &&
-        board[0][2] === board[1][1] &&
-        board[0][2] === board[2][0]
-      )
-        return true;
+      board[0][0] !== "" &&
+      board[0][0] === board[1][1] &&
+      board[0][0] === board[2][2]
+    )
+      return true;
+    if (
+      board[0][2] !== "" &&
+      board[0][2] === board[1][1] &&
+      board[0][2] === board[2][0]
+    )
+      return true;
 
-        return false;
+    return false;
   };
 
   const checkDraw = () => {
@@ -78,32 +78,63 @@ let gameController = (function () {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         if (board[i][j] === "") {
-          return false; 
+          return false;
         }
       }
     }
-    return true; 
-  }
+    return true;
+  };
 
   const playTurn = () => {
-  if(gameBoard.placeMarker(row,col, currentPlayer.marker)){
-    if(checkWin()){
-        console.log(`${currentPlayer.name} wins!`)
-        return;
-    }
+    if (gameBoard.placeMarker(row, col, currentPlayer.marker)) {
+        updateBoard();
 
-    if(checkDraw()){
-        console.log(`The game is Draw`)
-        return;
-    }
 
-    switchPlayer();
-  }
-  else {
-    console.log(`Select other cell`)
-  }
-  }
+      if (checkWin()) {
+        document.getElementById('game-status').textContent = `${currentPlayer.name} wins!`;
+        disableBoard();
+        return;
+      }
+
+      if (checkDraw()) {
+        document.getElementById("game-status").textContent = "The game is a Draw";
+        disableBoard();
+        return
+      }
+
+      switchPlayer();
+      document.getElementById("game-status").textContent = `${currentPlayer.name}'s turn`;
+    } else {
+        document.getElementById("game-status").textContent = "Select other cell";
+    }
+  };
+  
+  const updateBoard = () => {
+   const board = gameBoard.getBoard();
+   const cells = document.querySelectorAll('.cell');
+  
+   cells.forEach(cell => {
+      const row = cell.getAttribute('data-row')
+      const col = cell.getAttribute('data-col')
+      cell.textContent = board[row][col]
+   })
+  };
+
+  const disableBoard = () => {
+    const cells = document.querySelectorAll('.cell')
+    cells.forEach(cell => {
+        cell.disabled = true;
+    })
+  };
 
   return { playTurn };
 })();
 
+const cells = document.querySelectorAll('.cell')
+cells.forEach(cell => {
+    cell.addEventListener('click',(e) => {
+        const row = parseInt(e.target.getAttribute("data-row"))
+        const col = parseInt(e.target.getAttribute("data-col"))
+        gameController.playTurn(row,cell)
+    });
+})
