@@ -17,7 +17,15 @@ let gameBoard = (function () {
     return false;
   };
 
-  return { getBoard, placeMarker };
+  const resetBoard = () => {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          board[i][j] = "";
+        }
+      }
+  }
+
+  return { getBoard, placeMarker , resetBoard };
 })();
 
 class Players {
@@ -127,7 +135,24 @@ let gameController = (function () {
     })
   };
 
-  return { playTurn };
+  const restartGame = () => {
+    gameBoard.resetBoard();
+    updateBoard();
+    enableBoard();
+    currentPlayer = players[0]
+    document.getElementById('game-status').textContent = `${currentPlayer.name}'s turn`
+    
+  }
+
+  const enableBoard = () => {
+    const cells = document.querySelectorAll('.cell')
+      cells.forEach(cell =>{
+        cell.disabled = false;
+        cell.textContent = ""
+      })
+  }
+
+  return { playTurn , restartGame };
 })();
 
 const cells = document.querySelectorAll('.cell')
@@ -137,4 +162,9 @@ cells.forEach(cell => {
         const col = parseInt(e.target.getAttribute("data-col"))
         gameController.playTurn(row,col)
     });
+})
+
+
+document.getElementById('restart-btn').addEventListener('click',()=> {
+    gameController.restartGame();
 })
