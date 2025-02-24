@@ -9,13 +9,23 @@ let gameBoard = (function () {
 
   getBoard = () => board;
 
-  return { getBoard };
+  let placeMarker = (row,col,marker) => {
+    if(board[row][col] === ""){
+        board[row][col] = marker;
+        return true;
+    }
+      return false;
+  }
+
+  return { getBoard ,placeMarker};
 })();
 
 
-class Player{
+class Players{
     constructor(name,marker){
         this.name = name;
         this.marker = marker;
     }
 }
+
+
