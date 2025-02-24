@@ -35,7 +35,7 @@ let gameController = (function () {
   let currentPlayer = players[0];
 
   const switchPlayer = () => {
-    currentPlayer = (currentPlayer = players[0]) ? players[1] : players[0];
+    currentPlayer = (currentPlayer === players[0]) ? players[1] : players[0];
   };
 
   const checkWin = () => {
@@ -85,7 +85,7 @@ let gameController = (function () {
     return true;
   };
 
-  const playTurn = () => {
+  const playTurn = (row,col) => {
     if (gameBoard.placeMarker(row, col, currentPlayer.marker)) {
         updateBoard();
 
@@ -135,6 +135,6 @@ cells.forEach(cell => {
     cell.addEventListener('click',(e) => {
         const row = parseInt(e.target.getAttribute("data-row"))
         const col = parseInt(e.target.getAttribute("data-col"))
-        gameController.playTurn(row,cell)
+        gameController.playTurn(row,col)
     });
 })
