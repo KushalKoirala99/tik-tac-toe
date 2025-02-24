@@ -13,4 +13,9 @@ let gameBoard = (function () {
 })();
 
 
-console.log(gameBoard.getBoard())
+class Player{
+    constructor(name,marker){
+        this.name = name;
+        this.marker = marker;
+    }
+}
